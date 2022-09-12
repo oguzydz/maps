@@ -11,9 +11,11 @@ const Stack = createNativeStackNavigator();
 
 const AppContainer = () => (
     <NavigationContainer>
-        <Stack.Navigator initialRouteName='Map'>
+        <Stack.Navigator>
             <Stack.Group screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="Launch" component={Launch} />
+            </Stack.Group>
+            <Stack.Group screenOptions={{ presentation: "containedModal", headerShown: false }}>
                 <Stack.Screen name="Map" component={Map} />
             </Stack.Group>
         </Stack.Navigator>
