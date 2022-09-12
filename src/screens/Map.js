@@ -1,11 +1,16 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Polygon, Marker } from 'react-native-maps';
 
 import Header from '../components/Header';
 
-const Map = () => {
+const HomeMarkerIcon = require('../assets/img/home-marker.png')
+
+
+const Map = ({ route }) => {
+    const { region } = route.params || {};
+
     return (
         <View style={styles.container}>
             <Header />
@@ -13,12 +18,28 @@ const Map = () => {
                 provider={PROVIDER_GOOGLE} // remove if not using Google Maps
                 style={styles.map}
                 region={{
-                    latitude: 37.78825,
-                    longitude: -122.4324,
-                    latitudeDelta: 0.015,
-                    longitudeDelta: 0.0121,
+                    longitude: region?.center?.coordinates[0],
+                    latitude: region?.center?.coordinates[1],
+                    latitudeDelta: 0.002,
+                    longitudeDelta: 0.07,
                 }}
             >
+                {region?.polygon?.coordinates?.map((polygon, index) => {
+                    return <Polygon
+                        key={index.toString()}
+                        coordinates={polygon?.map(coordinates => ({ latitude: coordinates[1], longitude: coordinates[0] }))}
+                        strokeColor="rgba(0,0,0,0.6)"
+                        fillColor="rgba(0,0,0,0.2)"
+                        strokeWidth={3}
+                    />
+                })}
+                <Marker coordinate={{ longitude: region?.center?.coordinates[0], latitude: region?.center?.coordinates[1] }} >
+                    <Image
+                        style={styles.homeMarker}
+                        source={HomeMarkerIcon}
+                        resizeMode="contain"
+                    />
+                </Marker>
             </MapView>
         </View>
     )
@@ -36,4 +57,8 @@ const styles = StyleSheet.create({
     map: {
         ...StyleSheet.absoluteFillObject,
     },
+    homeMarker: {
+        width: 40,
+        height: 40,
+    }
 });
