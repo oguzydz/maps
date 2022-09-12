@@ -4,6 +4,7 @@ import { decode } from "@googlemaps/polyline-codec";
 import MapView, { PROVIDER_GOOGLE, Polygon, Marker, Polyline } from 'react-native-maps';
 
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 import mobileCaseData from "../assets/json/mobileCaseData";
 
@@ -24,7 +25,7 @@ const Map = ({ route: navigationRoute }) => {
                     longitude: region?.center?.coordinates[0],
                     latitude: region?.center?.coordinates[1],
                     latitudeDelta: 0.0922,
-                   longitudeDelta: 0.0421
+                    longitudeDelta: 0.0421
                 }}
             >
                 {region?.polygon?.coordinates?.map((polygon, index) => {
@@ -58,6 +59,10 @@ const Map = ({ route: navigationRoute }) => {
                     strokeWidth={3}
                 />
             </MapView>
+
+            <Footer
+                region={region}
+            />
         </View>
     )
 };
