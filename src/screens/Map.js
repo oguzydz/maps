@@ -3,9 +3,12 @@ import { View, StyleSheet } from 'react-native';
 
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
+import Header from '../components/Header';
+
 const Map = () => {
     return (
         <View style={styles.container}>
+            <Header />
             <MapView
                 provider={PROVIDER_GOOGLE} // remove if not using Google Maps
                 style={styles.map}
