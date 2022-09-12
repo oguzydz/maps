@@ -12,8 +12,13 @@ const HomeMarkerIcon = require('../assets/img/home-marker.png')
 const CourierMarkerIcon = require('../assets/img/courier-marker.png')
 
 const Map = ({ route: navigationRoute }) => {
-    const { region } = navigationRoute.params || {};
+    const { region: getRegion } = navigationRoute.params || {};
+    
+    const [region, setRegion] = React.useState(getRegion);
+
     const route = mobileCaseData.routes?.filter(item => item?.regionId === region?._id)[0] || {};
+    const prevRegion = mobileCaseData?.regions[mobileCaseData.regions?.findIndex(item => item?._id === region?._id) - 1] || null;
+    const nextRegion = mobileCaseData?.regions[mobileCaseData.regions?.findIndex(item => item?._id === region?._id) + 1] || null
 
     return (
         <View style={styles.container}>
@@ -61,7 +66,10 @@ const Map = ({ route: navigationRoute }) => {
             </MapView>
 
             <Footer
+                prevRegion={prevRegion}
+                nextRegion={nextRegion}
                 region={region}
+                setRegion={(newRegion) => setRegion(newRegion)}
             />
         </View>
     )
