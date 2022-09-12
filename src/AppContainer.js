@@ -11,7 +11,7 @@ const Stack = createNativeStackNavigator();
 
 const AppContainer = () => (
     <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator initialRouteName='Map'>
             <Stack.Group screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="Launch" component={Launch} />
                 <Stack.Screen name="Map" component={Map} />

@@ -1,7 +1,7 @@
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
-platform :ios, '11.0'
+platform :ios, '13.0'
 install! 'cocoapods', :deterministic_uuids => false
 
 target 'maps' do
@@ -19,6 +19,12 @@ target 'maps' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  # React Native Maps dependencies
+  rn_maps_path = '../node_modules/react-native-maps'
+  pod 'react-native-google-maps', :path => rn_maps_path
+  pod 'GoogleMaps'
+  pod 'Google-Maps-iOS-Utils'
+
   target 'mapsTests' do
     inherit! :complete
     # Pods for testing
@@ -31,6 +37,12 @@ target 'maps' do
   use_flipper!()
 
   post_install do |installer|
+    # Build Active Architecture Only "NO" (react-native-maps)
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+          config.build_settings['ONLY_ACTIVE_ARCH'] = 'NO'
+      end
+    end
     react_native_post_install(installer)
     __apply_Xcode_12_5_M1_post_install_workaround(installer)
   end
